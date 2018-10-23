@@ -38,8 +38,8 @@
 
     <form id="loginFormId" method="post">
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" name="phone" id="phoneId" placeholder="手机号">
-        <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+        <input type="text" class="form-control" name="username" id="usernameId" placeholder="用户名">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
         <input type="password" class="form-control" name="password" id="passwordId" placeholder="密码">
@@ -90,8 +90,8 @@
   });
   $(document).ready(function () {
       $("#loginButtonId").click(function () {
-          if ($("#phoneId").val()=="" || $("#phoneId").val()==null) {
-              alert("请输入手机号！");
+          if ($("#usernameId").val()=="" || $("#usernameId").val()==null) {
+              alert("请输入用户名！");
               return false;
           }
           if ($("#passwordId").val()=="" || $("#passwordId").val()==null) {
