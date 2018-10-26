@@ -1,12 +1,7 @@
-package com.mmall.util;
-
-import org.springframework.util.StringUtils;
+package com.test.yanglao.util;
 
 import java.security.MessageDigest;
 
-/**
- * Created by geely
- */
 public class MD5Util {
 
     private static String byteArrayToHexString(byte b[]) {
@@ -48,7 +43,7 @@ public class MD5Util {
     }
 
     public static String MD5EncodeUtf8(String origin) {
-        origin = origin + PropertiesUtil.getProperty("password.salt", "");
+        //origin = origin + PropertiesUtil.getProperty("password.salt", "");
         return MD5Encode(origin, "utf-8");
     }
 

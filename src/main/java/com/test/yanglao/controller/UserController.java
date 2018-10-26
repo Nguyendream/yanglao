@@ -1,4 +1,65 @@
 package com.test.yanglao.controller;
 
+import com.test.yanglao.common.Const;
+import com.test.yanglao.common.ServerResponse;
+import com.test.yanglao.pojo.User;
+import com.test.yanglao.service.UserService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+@RestController
+@RequestMapping(value="/user/")
 public class UserController {
+
+
+    @Resource
+    private UserService userService;
+
+
+    @RequestMapping(value = "login.do", method = RequestMethod.POST)
+    public ServerResponse<User> login(String username, String password, HttpSession session) {
+
+        ServerResponse<User> response = userService.login(username, password);
+        if (response.isSuccess()) {
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "logout.do", method = RequestMethod.POST)
+    public ServerResponse<String> logout(HttpSession session) {
+
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user != null) {
+            session.removeAttribute(Const.CURRENT_USER);
+            return ServerResponse.createBySuccessMessage("注销成功");
+        }
+        return ServerResponse.createByErrorMessage("注销失败，未登陆");
+    }
+
+    @RequestMapping(value = "register.do", method = RequestMethod.POST)
+    public ServerResponse<String> register(User user) {
+
+        return userService.register(user);
+    }
+
+    @RequestMapping(value = "check_valid.do", method = RequestMethod.POST)
+    public ServerResponse<String> checkValid(String str, String type) {
+
+        return userService.checkValid(str, type);
+    }
+
+    @RequestMapping(value = "get_user_info.do", method = RequestMethod.POST)
+    public ServerResponse<User> getUserInfo(HttpSession session) {
+
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user != null) {
+            return ServerResponse.createBySuccess(user);
+        }
+        return ServerResponse.createByErrorMessage("用户未登陆,无法获取信息");
+    }
 }
