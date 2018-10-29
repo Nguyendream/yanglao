@@ -20,10 +20,10 @@
 
         <!--jdbc的数据库连接 -->
         <jdbcConnection
-                driverClass="${c3p0.driverClass}"
-                connectionURL="${c3p0.jdbcUrl}"
-                userId="${c3p0.user}"
-                password="${c3p0.password}">
+                driverClass="${spring.datasource.driver-class-name}"
+                connectionURL="${spring.datasource.url}"
+                userId="${spring.datasource.username}"
+                password="${spring.datasource.password}">
         </jdbcConnection>
 
 
