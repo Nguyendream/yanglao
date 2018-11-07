@@ -17,7 +17,7 @@ public class ViewController {
         if (user != null) {
             return "index";
         }
-        return "/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/login")
