@@ -83,7 +83,7 @@
       <p>- OR -</p>
     </div>
 
-    <a href="login.html" class="text-center">已拥有账号，登陆</a>
+    <a href="/login" class="text-center">已拥有账号，登陆</a>
   </div>
   <!-- /.form-box -->
 </div>
@@ -150,7 +150,7 @@
               success: function(data) {
                   if (data.status == 0) {
                       alert("注册成功");
-                      location.href="login.html";
+                      location.href="/login";
                   } else {
                       alert(data.msg);
                   }
