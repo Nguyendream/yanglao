@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service("userService")
 public class UserServiceImp implements UserService {
@@ -83,6 +84,12 @@ public class UserServiceImp implements UserService {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         return ServerResponse.createBySuccessMessage("校验成功");
+    }
+
+    @Override
+    public ServerResponse<List<User>> list() {
+
+        return ServerResponse.createBySuccess(userMapper.selectAllUsers());
     }
 
 }

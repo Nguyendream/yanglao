@@ -135,4 +135,10 @@
     where username = #{username}
     and password = #{password}
   </select>
+  
+  <select id="selectAllUsers" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    from yanglao_user
+  </select>
 </mapper>

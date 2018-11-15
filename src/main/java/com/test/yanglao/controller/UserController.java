@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/user/")
@@ -61,5 +62,11 @@ public class UserController {
             return ServerResponse.createBySuccess(user);
         }
         return ServerResponse.createByErrorMessage("用户未登陆,无法获取信息");
+    }
+
+    @RequestMapping(value = "get_all_users.do", method = RequestMethod.POST)
+    public ServerResponse<List<User>> getAllUsers() {
+
+        return userService.list();
     }
 }
