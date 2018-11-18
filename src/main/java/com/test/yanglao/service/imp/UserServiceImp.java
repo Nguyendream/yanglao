@@ -2,7 +2,9 @@ package com.test.yanglao.service.imp;
 
 import com.test.yanglao.common.Const;
 import com.test.yanglao.common.ServerResponse;
+import com.test.yanglao.dao.DeviceIdMapper;
 import com.test.yanglao.dao.UserMapper;
+import com.test.yanglao.pojo.DeviceId;
 import com.test.yanglao.pojo.User;
 import com.test.yanglao.service.UserService;
 import com.test.yanglao.util.MD5Util;
@@ -17,6 +19,9 @@ public class UserServiceImp implements UserService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Resource
+    private DeviceIdMapper deviceIdMapper;
 
     @Override
     public ServerResponse<User> login(String username, String password) {
@@ -39,7 +44,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ServerResponse<String> register(User user) {
+    public ServerResponse<String> register(User user, Integer deviceNum) {
 
         //验证是否存在用户名与手机号
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
@@ -55,10 +60,12 @@ public class UserServiceImp implements UserService {
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
 
+        //todo 设备号校验
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
         } else {
+
             return ServerResponse.createBySuccessMessage("注册成功");
         }
     }
@@ -80,6 +87,7 @@ public class UserServiceImp implements UserService {
                     return ServerResponse.createByErrorMessage("手机号已存在");
                 }
             }
+            //todo 设备号校验
         } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }
@@ -89,7 +97,14 @@ public class UserServiceImp implements UserService {
     @Override
     public ServerResponse<List<User>> list() {
 
-        return ServerResponse.createBySuccess(userMapper.selectAllUsers());
+        List<User> userList = userMapper.selectAllUsers();
+        User user;
+        for (int i = 0; i < userList.size(); i++) {
+            user = userList.get(i);
+            user.setPassword(StringUtils.EMPTY);
+            userList.set(i, user);
+        }
+        return ServerResponse.createBySuccess(userList);
     }
 
 }

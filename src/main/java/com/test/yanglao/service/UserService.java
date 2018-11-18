@@ -9,7 +9,7 @@ public interface UserService {
 
     ServerResponse<User> login(String username, String password);
 
-    ServerResponse<String> register(User user);
+    ServerResponse<String> register(User user, Integer deviceNum);
 
     ServerResponse<String> checkValid(String str, String type);
 

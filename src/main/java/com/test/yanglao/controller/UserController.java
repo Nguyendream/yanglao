@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+
 @RestController
 @RequestMapping(value="/user/")
 public class UserController {
@@ -22,11 +23,18 @@ public class UserController {
 
 
     @RequestMapping(value = "login.do", method = RequestMethod.POST)
-    public ServerResponse<User> login(String username, String password, HttpSession session) {
+    public ServerResponse<User> login(String username, String password, String remPassword, HttpSession session) {
 
         ServerResponse<User> response = userService.login(username, password);
         if (response.isSuccess()) {
             session.setAttribute(Const.CURRENT_USER, response.getData());
+            if (remPassword == null) {
+                session.setMaxInactiveInterval(30*60);//session超时时间(秒)
+            } else if (remPassword.equals(Const.ON)) {
+                session.setMaxInactiveInterval(3600*24*7);
+            } else {
+                return ServerResponse.createByErrorMessage("错误的参数");
+            }
         }
         return response;
     }
@@ -43,9 +51,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
-    public ServerResponse<String> register(User user) {
+    public ServerResponse<String> register(User user, Integer deviceNum) {
 
-        return userService.register(user);
+        return userService.register(user, deviceNum);
     }
 
     @RequestMapping(value = "check_valid.do", method = RequestMethod.POST)
