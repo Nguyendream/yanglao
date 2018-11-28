@@ -13,6 +13,8 @@ public class DeviceLogs {
 
     private Double gus;
 
+    //todo 红外
+
     private Date createTime;
 
     public DeviceLogs(Integer id, Integer deviceId, Double temp, Double humi, Double gus, Date createTime) {
