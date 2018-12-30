@@ -8,11 +8,12 @@
       <arg column="temp" javaType="java.lang.Double" jdbcType="DOUBLE" />
       <arg column="humi" javaType="java.lang.Double" jdbcType="DOUBLE" />
       <arg column="gus" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="inf" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, device_id, temp, humi, gus, create_time
+    id, device_id, temp, humi, gus, inf, create_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,11 +26,11 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.test.yanglao.pojo.DeviceLogs">
-    insert into yanglao_device_logs (id, device_id, temp, 
-      humi, gus, create_time
+    insert into yanglao_device_logs (id, device_id, temp,
+      humi, gus, inf, create_time
       )
-    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{temp,jdbcType=DOUBLE}, 
-      #{humi,jdbcType=DOUBLE}, #{gus,jdbcType=DOUBLE}, now()
+    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{temp,jdbcType=DOUBLE},
+      #{humi,jdbcType=DOUBLE}, #{gus,jdbcType=DOUBLE}, #{inf,jdbcType=INTEGER}, now()
       )
   </insert>
   <insert id="insertSelective" parameterType="com.test.yanglao.pojo.DeviceLogs">
@@ -49,6 +50,9 @@
       </if>
       <if test="gus != null">
         gus,
+      </if>
+      <if test="inf != null">
+        inf,
       </if>
       <if test="createTime != null">
         create_time,
@@ -70,6 +74,9 @@
       <if test="gus != null">
         #{gus,jdbcType=DOUBLE},
       </if>
+      <if test="inf != null">
+        #{inf,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         now(),
       </if>
@@ -90,6 +97,9 @@
       <if test="gus != null">
         gus = #{gus,jdbcType=DOUBLE},
       </if>
+      <if test="inf != null">
+        inf = #{inf,jdbcType=INTEGER},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -102,6 +112,7 @@
       temp = #{temp,jdbcType=DOUBLE},
       humi = #{humi,jdbcType=DOUBLE},
       gus = #{gus,jdbcType=DOUBLE},
+      inf = #{inf,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>

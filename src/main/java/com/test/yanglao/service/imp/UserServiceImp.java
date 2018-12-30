@@ -44,9 +44,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ServerResponse<String> register(User user, Integer deviceNum) {
+    public ServerResponse<String> register(User user, String deviceNum) {
 
-        //验证是否存在用户名与手机号
+        //验证是否存在用户名,手机号,设备号
         ServerResponse validResponse = this.checkValid(user.getUsername(), Const.USERNAME);
         if (!validResponse.isSuccess()) {
             return validResponse;
@@ -55,19 +55,25 @@ public class UserServiceImp implements UserService {
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
+        validResponse = this.checkValid(deviceNum, Const.DEVICE_ID);
+        if (!validResponse.isSuccess()) {
+            return validResponse;
+        }
 
         user.setRole(Const.Role.ROLE_USER);
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
 
-        //todo 设备号校验
+        DeviceId deviceId = new DeviceId();
+        deviceId.setDeviceId(Integer.parseInt(deviceNum));
+
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
             return ServerResponse.createByErrorMessage("注册失败");
-        } else {
-
-            return ServerResponse.createBySuccessMessage("注册成功");
         }
+        // todo insert deviceId table
+        //resultCount = deviceIdMapper.insert();
+        return ServerResponse.createBySuccessMessage("注册成功");
     }
 
     @Override
@@ -87,7 +93,13 @@ public class UserServiceImp implements UserService {
                     return ServerResponse.createByErrorMessage("手机号已存在");
                 }
             }
-            //todo 设备号校验
+            // 设备号校验
+            if (Const.DEVICE_ID.equals(type)) {
+                int resultCount = deviceIdMapper.checkDeviceId(str);
+                if (resultCount > 0) {
+                    return ServerResponse.createByErrorMessage("该设备已注册");
+                }
+            }
         } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }

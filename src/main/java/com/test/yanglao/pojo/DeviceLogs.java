@@ -13,16 +13,17 @@ public class DeviceLogs {
 
     private Double gus;
 
-    //todo 红外
+    private Integer inf;
 
     private Date createTime;
 
-    public DeviceLogs(Integer id, Integer deviceId, Double temp, Double humi, Double gus, Date createTime) {
+    public DeviceLogs(Integer id, Integer deviceId, Double temp, Double humi, Double gus, Integer inf, Date createTime) {
         this.id = id;
         this.deviceId = deviceId;
         this.temp = temp;
         this.humi = humi;
         this.gus = gus;
+        this.inf = inf;
         this.createTime = createTime;
     }
 
@@ -68,6 +69,14 @@ public class DeviceLogs {
 
     public void setGus(Double gus) {
         this.gus = gus;
+    }
+
+    public Integer getInf() {
+        return inf;
+    }
+
+    public void setInf(Integer inf) {
+        this.inf = inf;
     }
 
     public Date getCreateTime() {

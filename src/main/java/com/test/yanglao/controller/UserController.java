@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "register.do", method = RequestMethod.POST)
-    public ServerResponse<String> register(User user, Integer deviceNum) {
+    public ServerResponse<String> register(User user, String deviceNum) {
 
         return userService.register(user, deviceNum);
     }
