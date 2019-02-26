@@ -17,5 +17,5 @@ public interface DeviceIdMapper {
 
     int updateByPrimaryKey(DeviceId record);
 
-    int checkDeviceId(String deviceId);
+    int checkDeviceId(Integer deviceId);
 }

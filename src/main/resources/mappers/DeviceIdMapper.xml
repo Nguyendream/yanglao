@@ -92,7 +92,7 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="checkDeviceId" resultType="int" parameterType="String">
+  <select id="checkDeviceId" resultType="int" parameterType="integer">
     select count(1) from yanglao_device_id
     where device_id = #{deviceId}
   </select>

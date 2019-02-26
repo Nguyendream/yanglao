@@ -94,12 +94,12 @@ public class UserServiceImp implements UserService {
                 }
             }
             // 设备号校验
-            if (Const.DEVICE_ID.equals(type)) {
+            /*if (Const.DEVICE_ID.equals(type)) {
                 int resultCount = deviceIdMapper.checkDeviceId(str);
                 if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("该设备已注册");
                 }
-            }
+            }*/
         } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }

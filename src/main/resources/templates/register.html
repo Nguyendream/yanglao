@@ -52,10 +52,6 @@
         </span>
       </div>
       <div class="form-group has-feedback">
-        <input id="deviceNumId" type="text" class="form-control" name="deviceNum" placeholder="设备号">
-        <span class="glyphicon glyphicon-tasks form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
         <input id="passwordId" type="password" class="form-control" name="password" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
@@ -119,7 +115,6 @@
           }
 
           //todo 验证码
-          //todo 设备号
 
           var passwordPattern = /^([a-zA-Z0-9]|[._&*#@]){6,20}$/;
           if (!passwordPattern.exec($("#passwordId").val())) {
