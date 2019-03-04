@@ -20,4 +20,6 @@ public interface DeviceLogsMapper {
     int updateByPrimaryKey(DeviceLogs record);
 
     List<DeviceLogs> selectListByDeviceId(Integer deviceId);
+
+    int deleteByDeviceId(Integer deviceId);
 }

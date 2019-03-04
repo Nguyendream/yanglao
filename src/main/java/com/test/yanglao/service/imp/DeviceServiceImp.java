@@ -41,21 +41,44 @@ public class DeviceServiceImp implements DeviceService {
 
     @Override
     public ServerResponse<String> updateDevice(DeviceId deviceId) {
-        return null;
+        if (deviceId.getDeviceId() == null || deviceId.getUserId() == null) {
+            return ServerResponse.createByErrorMessage("参数错误");
+        }
+        if (!this.getDeviceByUserAndDeviceId(deviceId.getUserId(), deviceId.getDeviceId()).isSuccess()) {
+            return ServerResponse.createByErrorMessage("设备参数更新错误，找不到该设备");
+        }
+        int resultCount = deviceIdMapper.updateByPrimaryKeySelective(deviceId);
+        if (resultCount > 0) {
+            return ServerResponse.createBySuccessMessage("参设备数更新成功");
+        }
+        return ServerResponse.createByErrorMessage("设备参数更新失败");
     }
 
     @Override
     public ServerResponse<DeviceId> getDeviceByUserAndDeviceId(Integer userId, Integer deviceId) {
-        return null;
+
+        DeviceId deviceId1 = deviceIdMapper.selectByDeviceIdUserId(deviceId, userId);
+        if (deviceId1 == null) {
+            return ServerResponse.createByErrorMessage("查询无结果");
+        }
+
+        return ServerResponse.createBySuccess(deviceId1);
     }
 
     @Override
     public ServerResponse<List<DeviceId>> selectDeviceByUserId(Integer userId) {
-        return null;
+
+        List<DeviceId> deviceIds = deviceIdMapper.selectByUserId(userId);
+        return ServerResponse.createBySuccess(deviceIds);
     }
 
     @Override
     public ServerResponse<String> deleteDevice(Integer userId, Integer deviceId) {
+
+        int resultCount = deviceIdMapper.deleteByDeviceIdUserId(deviceId, userId);
+        if (resultCount > 0) {
+            return ServerResponse.createBySuccessMessage("删除设备成功");
+        }
         return null;
     }
 
@@ -77,6 +100,7 @@ public class DeviceServiceImp implements DeviceService {
 
     @Override
     public ServerResponse addLogs(DeviceLogs deviceLogs) {
+
 
         int resultCount = deviceLogsMapper.insert(deviceLogs);
         if (resultCount == 0) {

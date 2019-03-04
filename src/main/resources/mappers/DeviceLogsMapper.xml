@@ -123,4 +123,9 @@
     from yanglao_device_logs
     where device_id = #{deviceId,jdbcType=INTEGER}
   </select>
+
+  <delete id="deleteByDeviceId" parameterType="integer">
+    delete from yanglao_device_logs
+    where device_id = #{deviceId, jdbcType=INTEGER}
+  </delete>
 </mapper>

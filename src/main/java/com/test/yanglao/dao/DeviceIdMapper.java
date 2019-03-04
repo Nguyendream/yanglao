@@ -2,6 +2,9 @@ package com.test.yanglao.dao;
 
 import com.test.yanglao.pojo.DeviceId;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface DeviceIdMapper {
@@ -18,4 +21,10 @@ public interface DeviceIdMapper {
     int updateByPrimaryKey(DeviceId record);
 
     int checkDeviceId(Integer deviceId);
+
+    DeviceId selectByDeviceIdUserId(@Param("deviceId") Integer deviceId, @Param("userId") Integer userId);
+
+    List<DeviceId> selectByUserId(Integer userId);
+
+    int deleteByDeviceIdUserId(@Param("deviceId") Integer deviceId, @Param("userId") Integer userId);
 }
