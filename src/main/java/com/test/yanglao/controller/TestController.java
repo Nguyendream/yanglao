@@ -3,10 +3,8 @@ package com.test.yanglao.controller;
 
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.pojo.DeviceLogs;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -20,5 +18,13 @@ public class TestController {
             return ServerResponse.createBySuccess(testJson);
         }
         return ServerResponse.createByErrorMessage("Error Request!!!");
+    }
+
+    @RequestMapping(value = "/upload_test.do", method = RequestMethod.POST)
+    public ServerResponse<String> uploadTest(Integer deviceId, MultipartFile file) {
+
+        return ServerResponse.createBySuccessMessage("Success, deviceId: " + deviceId
+                                                    + "; filename: " + file.getOriginalFilename()
+                                                    + "; size: " + file.getSize());
     }
 }
