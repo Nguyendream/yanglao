@@ -24,7 +24,8 @@ public class TestController {
     public ServerResponse<String> uploadTest(Integer deviceId, MultipartFile file) {
 
         return ServerResponse.createBySuccessMessage("Success, deviceId: " + deviceId
-                                                    + "; filename: " + file.getOriginalFilename()
+                                                    + "; fileName: " + file.getOriginalFilename()
+                                                    + "; fileContentType: " + file.getContentType()
                                                     + "; size: " + file.getSize());
     }
 }

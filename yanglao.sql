@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `yanglao_device_files`
+--
+
+DROP TABLE IF EXISTS `yanglao_device_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `yanglao_device_files` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `device_id` int(11) NOT NULL COMMENT '设备号',
+  `file_name` varchar(50) NOT NULL COMMENT '文件名',
+  `file_type` varchar(20) NOT NULL COMMENT '文件类型',
+  `file_path` varchar(100) NOT NULL COMMENT '文件储存路径',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `device_id_foreign_idx` (`device_id`),
+  CONSTRAINT `device_id_foreign` FOREIGN KEY (`device_id`) REFERENCES `yanglao_device_id` (`device_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `yanglao_device_files`
+--
+
+LOCK TABLES `yanglao_device_files` WRITE;
+/*!40000 ALTER TABLE `yanglao_device_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `yanglao_device_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `yanglao_device_id`
 --
 
@@ -30,7 +59,7 @@ CREATE TABLE `yanglao_device_id` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `device_id_unique` (`device_id`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +68,7 @@ CREATE TABLE `yanglao_device_id` (
 
 LOCK TABLES `yanglao_device_id` WRITE;
 /*!40000 ALTER TABLE `yanglao_device_id` DISABLE KEYS */;
+INSERT INTO `yanglao_device_id` VALUES (1,1,1,'2018-11-28 15:55:50','2018-11-28 15:55:50');
 /*!40000 ALTER TABLE `yanglao_device_id` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -55,9 +85,10 @@ CREATE TABLE `yanglao_device_logs` (
   `temp` double NOT NULL COMMENT '温度',
   `humi` double NOT NULL COMMENT '湿度',
   `gus` double NOT NULL COMMENT '可燃气体浓度',
+  `inf` int(2) NOT NULL COMMENT '红外',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +97,7 @@ CREATE TABLE `yanglao_device_logs` (
 
 LOCK TABLES `yanglao_device_logs` WRITE;
 /*!40000 ALTER TABLE `yanglao_device_logs` DISABLE KEYS */;
-INSERT INTO `yanglao_device_logs` VALUES (1,1,12.43,34.53,3.4,'2018-11-15 10:57:42'),(2,1,12.43,54.53,3.4,'2018-11-15 10:58:05'),(3,1,12.43,34.53,8.4,'2018-11-15 10:58:56');
+INSERT INTO `yanglao_device_logs` VALUES (1,1,12.43,34.53,3.4,0,'2018-11-15 10:57:42'),(2,1,12.43,54.53,3.4,0,'2018-11-15 10:58:05'),(3,1,12.43,34.53,8.4,0,'2018-11-15 10:58:56'),(4,1,17.43,35.53,9.4,1,'2018-11-28 15:30:03');
 /*!40000 ALTER TABLE `yanglao_device_logs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +118,7 @@ CREATE TABLE `yanglao_user` (
   `update_time` datetime NOT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name_unique` (`username`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +127,7 @@ CREATE TABLE `yanglao_user` (
 
 LOCK TABLES `yanglao_user` WRITE;
 /*!40000 ALTER TABLE `yanglao_user` DISABLE KEYS */;
-INSERT INTO `yanglao_user` VALUES (1,'test1','E10ADC3949BA59ABBE56E057F20F883E','11111111111',0,'2018-10-24 22:16:17','2018-10-24 22:16:17'),(2,'n5438','E10ADC3949BA59ABBE56E057F20F883E','11595956231',0,'2018-10-25 10:53:25','2018-10-25 10:53:25'),(3,'test2','E10ADC3949BA59ABBE56E057F20F883E','11111111112',0,'2018-10-26 16:45:02','2018-10-26 16:45:02');
+INSERT INTO `yanglao_user` VALUES (1,'test1','E10ADC3949BA59ABBE56E057F20F883E','11111111111',0,'2018-10-24 22:16:17','2018-10-24 22:16:17'),(2,'n5438','E10ADC3949BA59ABBE56E057F20F883E','11595956231',0,'2018-10-25 10:53:25','2018-10-25 10:53:25'),(3,'test2','E10ADC3949BA59ABBE56E057F20F883E','11111111112',0,'2018-10-26 16:45:02','2018-10-26 16:45:02'),(4,'test3','E10ADC3949BA59ABBE56E057F20F883E','11111111113',0,'2018-11-18 23:21:11','2018-11-18 23:21:11');
 /*!40000 ALTER TABLE `yanglao_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -109,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-15 16:32:23
+-- Dump completed on 2019-03-06 21:18:28
