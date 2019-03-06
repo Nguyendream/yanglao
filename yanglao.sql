@@ -26,7 +26,7 @@ CREATE TABLE `yanglao_device_files` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `device_id` int(11) NOT NULL COMMENT '设备号',
   `file_name` varchar(50) NOT NULL COMMENT '文件名',
-  `file_type` varchar(20) NOT NULL COMMENT '文件类型',
+  `file_type` varchar(50) NOT NULL COMMENT '文件类型',
   `file_path` varchar(100) NOT NULL COMMENT '文件储存路径',
   `create_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`),
@@ -140,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-03-06 21:18:28
+-- Dump completed on 2019-03-06 21:40:20
