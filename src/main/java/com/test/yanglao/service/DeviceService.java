@@ -1,5 +1,6 @@
 package com.test.yanglao.service;
 
+import com.github.pagehelper.PageInfo;
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.pojo.DeviceId;
 import com.test.yanglao.pojo.DeviceLogs;
@@ -23,7 +24,7 @@ public interface DeviceService {
     //DeviceLogs
     ServerResponse<String> addLogs(DeviceLogs deviceLogs);
 
-    ServerResponse<List<DeviceLogs>> selectLogsById(Integer deviceId);
+    ServerResponse<PageInfo> selectLogsById(Integer deviceId, int pageNum, int pageSize);
 
     ServerResponse<String> deleteLogByUserAndDeviceId(Integer userId, Integer deviceId);
 }

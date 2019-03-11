@@ -1,7 +1,10 @@
 package com.test.yanglao.service;
 
+import com.github.pagehelper.PageInfo;
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.pojo.DeviceFile;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DeviceFileService {
@@ -10,5 +13,7 @@ public interface DeviceFileService {
 
     ServerResponse<String> fileUpload(DeviceFile deviceFile, MultipartFile file);
 
-    //todo list
+    ResponseEntity<InputStreamResource> fileDownload(Integer fileId, Integer userId);
+
+    ServerResponse<PageInfo> getFileListById(Integer deviceId, int pageNum, int pageSize);
 }

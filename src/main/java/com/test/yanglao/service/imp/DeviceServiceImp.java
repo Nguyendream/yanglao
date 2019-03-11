@@ -1,5 +1,7 @@
 package com.test.yanglao.service.imp;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.test.yanglao.common.Const;
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.dao.DeviceIdMapper;
@@ -111,13 +113,14 @@ public class DeviceServiceImp implements DeviceService {
     }
 
     @Override
-    public ServerResponse<List<DeviceLogs>> selectLogsById(Integer deviceId) {
+    public ServerResponse<PageInfo> selectLogsById(Integer deviceId, int pageNum, int pageSize) {
 
+        PageHelper.startPage(pageNum, pageSize);
         List<DeviceLogs> list = deviceLogsMapper.selectListByDeviceId(deviceId);
-        if (list == null) {
-            return ServerResponse.createByErrorMessage("Error");
-        }
-        return ServerResponse.createBySuccess(list);
+
+        PageInfo pageInfo = new PageInfo(list);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
