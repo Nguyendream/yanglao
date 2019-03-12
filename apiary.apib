@@ -1,0 +1,318 @@
+FORMAT: 1A
+HOST: http://strend.iok.la/
+
+# yanglao
+
+智慧养老系统的api
+
+## device [/device/]
+
+给设备使用
+
+### add logs [POST /device/add_logs.do]
+
+添加/上传数据，数据包括设备号(deviceId),温度(temp),湿度(humi),可燃气体浓度(gus),红外传感(inf)。
+
+
++ Request (application/json)
+
+        {
+            "deviceId":1,
+            "temp":17.43,
+            "humi":35.53,
+            "gus":9.4,
+            "inf":1
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"Success"
+            }
+
+
+### list logs [POST /device/list_logs.do]
+
+用于查看数据库里的设备历史记录，根据设备号(deviceId)查询
+
++ Request (application/x-www-form-urlencoded)
+
+        deviceId=1
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": 0,
+                "data": [
+                    {
+                        "id": 1,
+                        "deviceId": 1,
+                        "temp": 12.43,
+                        "humi": 34.53,
+                        "gus": 3.4,
+                        "createTime": "2018-11-15 10:57:42"
+                    },
+                    {
+                        "id": 2,
+                        "deviceId": 1,
+                        "temp": 12.43,
+                        "humi": 54.53,
+                        "gus": 3.4,
+                        "createTime": "2018-11-15 10:58:05"
+                    }
+                ]
+            }
+### upload file [POST /device/upload_file.do]
+
+文件上传接口,Content-Type为multipart/form-data,实例为简单起见，使用json
+
++ Request (multipart/form-data)
+
+        {
+            "deviceId":1
+            "file":{file}
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"文件上传成功"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status":20,
+                "msg":"设备号未注册"
+            }
+            
+            {
+                "status":1,
+                "msg":"文件已存在"
+            }
+
+### test logs [POST /test/test_json.do]
+
+用于设备测试数据上传，数据不会被保存
+
++ Request (application/json)
+
+        {
+            "deviceId":1,
+            "temp":17.43,
+            "humi":35.53,
+            "gus":9.4,
+            "inf":1
+        }
+        
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": 0,
+                "data": {
+                    "id": null,
+                    "deviceId": 1,
+                    "temp": 13.123,
+                    "humi": 34.53,
+                    "gus": 3.4,
+                    "createTime": null
+                }
+            }
+
+### file upload test [POST /test/upload_test.do]
+
+文件上传测试,Content-Type为multipart/form-data,实例为简单起见，使用json
+
++ Request (multipart/form-data)
+
+        {
+            "deviceId":1,
+            "file":{file}
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"Success, deviceId: 1; filename: debug.log; size: 2076"
+            }
+
+## manage device [/manage/device/]
+
+用户设备管理接口
+
+### list files [GET /manage/device/list_files.do{?deviceId,pageNum,pageSize}]
+
++ Parameters
+    + deviceId (int, `1`) ... 设备号
+    + pageNum (int) ... 第几页 
+    + pageSize (int) ... 每页的数目
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": 0,
+                "data": {
+                    "total": 2,
+                    "list": [
+                        {
+                            "id": 1,
+                            "fileName": "debug.log",
+                            "fileType": "application/octet-stream",
+                            "createTime": "2019-03-11 18:04:59"
+                        },
+                        {
+                            "id": 2,
+                            "fileName": "1.txt",
+                            "fileType": "text/plain",
+                            "createTime": "2019-03-07 11:51:23"
+                        }
+                    ],
+                    "pageNum": 1,
+                    "pageSize": 10,
+                    "size": 2,
+                    "startRow": 1,
+                    "endRow": 2,
+                    "pages": 1,
+                    "prePage": 0,
+                    "nextPage": 0,
+                    "isFirstPage": true,
+                    "isLastPage": true,
+                    "hasPreviousPage": false,
+                    "hasNextPage": false,
+                    "navigatePages": 8,
+                    "navigatepageNums": [
+                        1
+                    ],
+                    "navigateFirstPage": 1,
+                    "navigateLastPage": 1
+                }
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+              "status": 10,
+              "msg": "用户未登录"
+            }
+    
+            {
+              "status": 20,
+              "msg": "设备号未注册"
+            }
+
+### download files [GET /manage/device/download/{fileId}]
+
+根据fileId下载文件
+
++ Parameters
+    + fileId (int, `1`) ... 文件id
+
++ Response 200
+
+    + Headers
+    
+            Cache-Control: no-cache, no-store, must-revalidate
+            Content-Disposition: attachment; filename=""
+            Pragma: no-cache
+            Expires: 0
+
++ Response 404
+
+        没有该文件或没有权限下载文件
+
++ Response 500
+
+        服务器逻辑错误
+
+### list logs [GET /manage/device/list_logs.do{?deviceId,pageNum,pageSize}]
+
++ Parameters
+    + deviceId (int, `1`) ... 设备号
+    + pageNum (int) ... 第几页
+    + pageSize (int) ... 每页计数
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+              "status": 0,
+              "data": {
+                "total": 4,
+                "list": [
+                  {
+                    "id": 1,
+                    "deviceId": 1,
+                    "temp": 12.43,
+                    "humi": 34.53,
+                    "gus": 3.4,
+                    "inf": 0,
+                    "createTime": "2018-11-15 10:57:42"
+                  },
+                  {
+                    "id": 2,
+                    "deviceId": 1,
+                    "temp": 12.43,
+                    "humi": 54.53,
+                    "gus": 3.4,
+                    "inf": 0,
+                    "createTime": "2018-11-15 10:58:05"
+                  },
+                  {
+                    "id": 3,
+                    "deviceId": 1,
+                    "temp": 12.43,
+                    "humi": 34.53,
+                    "gus": 8.4,
+                    "inf": 0,
+                    "createTime": "2018-11-15 10:58:56"
+                  },
+                  {
+                    "id": 4,
+                    "deviceId": 1,
+                    "temp": 17.43,
+                    "humi": 35.53,
+                    "gus": 9.4,
+                    "inf": 1,
+                    "createTime": "2018-11-28 15:30:03"
+                  }
+                ],
+                "pageNum": 1,
+                "pageSize": 10,
+                "size": 4,
+                "startRow": 1,
+                "endRow": 4,
+                "pages": 1,
+                "prePage": 0,
+                "nextPage": 0,
+                "isFirstPage": true,
+                "isLastPage": true,
+                "hasPreviousPage": false,
+                "hasNextPage": false,
+                "navigatePages": 8,
+                "navigatepageNums": [
+                  1
+                ],
+                "navigateFirstPage": 1,
+                "navigateLastPage": 1
+              }
+            }
