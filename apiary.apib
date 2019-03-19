@@ -153,7 +153,7 @@ HOST: http://strend.iok.la/
 
 ## manage device [/manage/device/]
 
-用户设备管理接口
+用户设备管理接口，需要用户登陆
 
 ### list files [GET /manage/device/list_files.do{?deviceId,pageNum,pageSize}]
 
@@ -245,6 +245,8 @@ HOST: http://strend.iok.la/
 
 ### list logs [GET /manage/device/list_logs.do{?deviceId,pageNum,pageSize}]
 
+根据设备号(deviceId)查询文件
+
 + Parameters
     + deviceId (int, `1`) ... 设备号
     + pageNum (int) ... 第几页
@@ -315,4 +317,142 @@ HOST: http://strend.iok.la/
                 "navigateFirstPage": 1,
                 "navigateLastPage": 1
               }
+            }
+
+### delete all logs [POST /manage/device/delete_all_logs.do]
+
+删除指定设备号的所有记录
+
++ Request (application/x-www-form-urlencoded)
+
+        {
+            "deviceId":1,
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"共删除0条记录",
+                "data":"0"
+            }
+
+
+### list device [GET /manage/device/list_device.do{?pageNum,pageSize}]
+
++ Parameters
+    + pageNum (int) ... 第几页
+    + pageSize (int) ... 每页计数
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status": 0,
+                "data": {
+                    "total": 1,
+                    "list": [
+                        {
+                            "id": 1,
+                            "deviceId": 1,
+                            "deviceName": "New Device",
+                            "createTime": "2018-11-28 15:55:50",
+                            "updateTime": "2018-11-28 15:55:50"
+                        }
+                    ],
+                    "pageNum": 1,
+                    "pageSize": 10,
+                    "size": 1,
+                    "startRow": 1,
+                    "endRow": 1,
+                    "pages": 1,
+                    "prePage": 0,
+                    "nextPage": 0,
+                    "isFirstPage": true,
+                    "isLastPage": true,
+                    "hasPreviousPage": false,
+                    "hasNextPage": false,
+                    "navigatePages": 8,
+                    "navigatepageNums": [
+                        1
+                    ],
+                    "navigateFirstPage": 1,
+                    "navigateLastPage": 1
+                }
+            }
+
+### add device [POST /manage/device/add_device.do]
+
++ Request (application/x-www-form-urlencoded)
+
+        {
+            "deviceId":1,
+            "deviceName":"device1"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"设备添加成功"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status":21,
+                "msg":"设备号已被注册"
+            }
+
+### update device [POST /manage/device/update_device.do]
+
++ Request (application/x-www-form-urlencoded)
+
+        {
+            "deviceId":1,
+            "deviceName":"device1"
+        }
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"设备更新成功"
+            }
+
+### delete device [GET /manage/device/delete_device.do{?deviceId}]
+
++ Parameters
+    + deviceId (int) ... 设备号
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "status":0,
+                "msg":"删除设备成功, 共删除0条记录"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "status":20,
+                "msg":"没有该设备"
+            }
+            
+            {
+                "status":1,
+                "msg":"设备删除失败"
             }
