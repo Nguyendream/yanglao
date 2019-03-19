@@ -1,13 +1,11 @@
-package com.test.yanglao.pojo;
+package com.test.yanglao.vo;
 
 import java.util.Date;
 
-public class DeviceId {
+public class DeviceIdListVo {
     private Integer id;
 
     private Integer deviceId;
-
-    private Integer userId;
 
     private String deviceName;
 
@@ -15,16 +13,15 @@ public class DeviceId {
 
     private Date updateTime;
 
-    public DeviceId(Integer id, Integer deviceId, Integer userId, String deviceName, Date createTime, Date updateTime) {
+    public DeviceIdListVo(Integer id, Integer deviceId, String deviceName, Date createTime, Date updateTime) {
         this.id = id;
         this.deviceId = deviceId;
-        this.userId = userId;
         this.deviceName = deviceName;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
-    public DeviceId() {
+    public DeviceIdListVo() {
         super();
     }
 
@@ -42,14 +39,6 @@ public class DeviceId {
 
     public void setDeviceId(Integer deviceId) {
         this.deviceId = deviceId;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
     }
 
     public String getDeviceName() {

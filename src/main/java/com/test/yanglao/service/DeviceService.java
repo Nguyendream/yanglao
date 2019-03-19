@@ -15,7 +15,7 @@ public interface DeviceService {
 
     ServerResponse<DeviceId> getDeviceByUserAndDeviceId(Integer userId, Integer deviceId);
 
-    ServerResponse<List<DeviceId>> selectDeviceByUserId(Integer userId);
+    public ServerResponse<PageInfo> selectDeviceByUserId(Integer userId, int pageNum, int pageSize);
 
     ServerResponse<String> deleteDevice(Integer userId, Integer deviceId);
 

@@ -26,5 +26,7 @@ public interface DeviceIdMapper {
 
     List<DeviceId> selectByUserId(Integer userId);
 
+    int updateByDeviceIdSelective(DeviceId deviceId);
+
     int deleteByDeviceIdUserId(@Param("deviceId") Integer deviceId, @Param("userId") Integer userId);
 }

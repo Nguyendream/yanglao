@@ -6,7 +6,8 @@ public enum ResponseCode {
     ERROR(1, "ERROR"),
     NEED_LOGIN(10, "NEED_LOGIN"),
     ILLEGAL_ARGUMENT(2, "ILLEGAL_ARGUMENT"),
-    DEVICE_NULL(20, "DEVICE_NULL");
+    DEVICE_NULL(20, "DEVICE_NULL"),
+    DEVICE_REGISTERED(21, "DEVICE_REGISTERED");
 
     private final int code;
     private final String desc;

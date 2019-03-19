@@ -6,12 +6,13 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="device_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="device_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="update_time" javaType="java.util.Date" jdbcType="TIMESTAMP" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
-    id, device_id, user_id, create_time, update_time
+    id, device_id, user_id, device_name, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -25,9 +26,9 @@
   </delete>
   <insert id="insert" parameterType="com.test.yanglao.pojo.DeviceId">
     insert into yanglao_device_id (id, device_id, user_id, 
-      create_time, update_time)
-    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
-      now(), now())
+      device_name, create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{deviceId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+      #{deviceName,jdbcType=VARCHAR}, now(), now())
   </insert>
   <insert id="insertSelective" parameterType="com.test.yanglao.pojo.DeviceId">
     insert into yanglao_device_id
@@ -40,6 +41,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="deviceName != null">
+        device_name,
       </if>
       <if test="createTime != null">
         create_time,
@@ -58,6 +62,9 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="deviceName != null">
+        #{deviceName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         now(),
       </if>
@@ -75,6 +82,9 @@
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -88,6 +98,7 @@
     update yanglao_device_id
     set device_id = #{deviceId,jdbcType=INTEGER},
       user_id = #{userId,jdbcType=INTEGER},
+      device_name = #{deviceName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
@@ -111,6 +122,23 @@
     from yanglao_device_id
     where user_id = #{userId,jdbcType=INTEGER}
   </select>
+
+<update id="updateByDeviceIdSelective" parameterType="com.test.yanglao.pojo.DeviceId">
+    update yanglao_device_id
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="deviceName != null">
+        device_name = #{deviceName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      update_time = now(),
+    </set>
+    where device_id = #{deviceId,jdbcType=INTEGER}
+  </update>
 
   <delete id="deleteByDeviceIdUserId" parameterType="map">
     delete from yanglao_device_id

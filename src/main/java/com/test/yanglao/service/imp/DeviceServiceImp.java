@@ -3,16 +3,19 @@ package com.test.yanglao.service.imp;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.test.yanglao.common.Const;
+import com.test.yanglao.common.ResponseCode;
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.dao.DeviceIdMapper;
 import com.test.yanglao.dao.DeviceLogsMapper;
 import com.test.yanglao.pojo.DeviceId;
 import com.test.yanglao.pojo.DeviceLogs;
 import com.test.yanglao.service.DeviceService;
+import com.test.yanglao.vo.DeviceIdListVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service("Device")
@@ -37,7 +40,8 @@ public class DeviceServiceImp implements DeviceService {
             }
             return ServerResponse.createBySuccessMessage("设备添加成功");
         } else {
-            return ServerResponse.createByErrorMessage("该设备已被使用");
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.DEVICE_REGISTERED.getCode(), "设备号已被注册");
         }
     }
 
@@ -49,7 +53,7 @@ public class DeviceServiceImp implements DeviceService {
         if (!this.getDeviceByUserAndDeviceId(deviceId.getUserId(), deviceId.getDeviceId()).isSuccess()) {
             return ServerResponse.createByErrorMessage("设备参数更新错误，找不到该设备");
         }
-        int resultCount = deviceIdMapper.updateByPrimaryKeySelective(deviceId);
+        int resultCount = deviceIdMapper.updateByDeviceIdSelective(deviceId);
         if (resultCount > 0) {
             return ServerResponse.createBySuccessMessage("参设备数更新成功");
         }
@@ -68,20 +72,44 @@ public class DeviceServiceImp implements DeviceService {
     }
 
     @Override
-    public ServerResponse<List<DeviceId>> selectDeviceByUserId(Integer userId) {
+    public ServerResponse<PageInfo> selectDeviceByUserId(Integer userId, int pageNum, int pageSize) {
 
+        PageHelper.startPage(pageNum, pageSize);
         List<DeviceId> deviceIds = deviceIdMapper.selectByUserId(userId);
-        return ServerResponse.createBySuccess(deviceIds);
+
+        List<DeviceIdListVo> deviceIdListVoList = new ArrayList<>();
+        for (DeviceId item : deviceIds) {
+            DeviceIdListVo deviceIdListVo = assembleDeviceIdListVo(item);
+            deviceIdListVoList.add(deviceIdListVo);
+        }
+
+        PageInfo pageInfo = new PageInfo(deviceIds);
+        pageInfo.setList(deviceIdListVoList);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 
     @Override
     public ServerResponse<String> deleteDevice(Integer userId, Integer deviceId) {
 
+        //删除设备相关历史记录
+        String logCount = "";
+        try {
+            ServerResponse<String> response = this.deleteLogByUserAndDeviceId(userId, deviceId);
+            logCount = response.getData();
+            if (!response.isSuccess()) {
+                return response;
+            }
+        } catch (Exception e) {
+            return ServerResponse.createByErrorMessage("设备记录删除失败");
+        }
+
+        //删除设备
         int resultCount = deviceIdMapper.deleteByDeviceIdUserId(deviceId, userId);
         if (resultCount > 0) {
-            return ServerResponse.createBySuccessMessage("删除设备成功");
+            return ServerResponse.createBySuccessMessage("删除设备成功, 共删除" + logCount + "条记录");
         }
-        return null;
+        return ServerResponse.createByErrorMessage("设备删除失败");
     }
 
     @Override
@@ -92,17 +120,25 @@ public class DeviceServiceImp implements DeviceService {
             if (Const.DEVICE_ID.equals(type)) {
                 int resultCount = deviceIdMapper.checkDeviceId(id);
                 if (resultCount > 0) {
-                    return ServerResponse.createByErrorMessage("设备已存在");
+                    return ServerResponse.createByErrorCodeMessage(
+                            ResponseCode.DEVICE_REGISTERED.getCode(), "设备已存在");
                 }
             }
 
         }
-        return null;
+        return ServerResponse.createBySuccess();
     }
 
     @Override
     public ServerResponse addLogs(DeviceLogs deviceLogs) {
 
+        //检验设备是否存在
+        if (this.checkIdValid(deviceLogs.getDeviceId(), Const.DEVICE_ID).isSuccess()) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.DEVICE_NULL.getCode(),
+                    ResponseCode.DEVICE_NULL.getDesc()
+            );
+        }
 
         int resultCount = deviceLogsMapper.insert(deviceLogs);
         if (resultCount == 0) {
@@ -125,6 +161,26 @@ public class DeviceServiceImp implements DeviceService {
 
     @Override
     public ServerResponse<String> deleteLogByUserAndDeviceId(Integer userId, Integer deviceId) {
-        return null;
+
+        DeviceId deviceId1 = deviceIdMapper.selectByDeviceIdUserId(deviceId, userId);
+        if (deviceId1 == null) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.DEVICE_NULL.getCode(), "没有该设备");
+        }
+
+        int resultCount = deviceLogsMapper.deleteByDeviceId(deviceId);
+        return ServerResponse.createBySuccess("共删除" + resultCount + "条记录", resultCount+"");
+    }
+
+
+    private DeviceIdListVo assembleDeviceIdListVo(DeviceId deviceId) {
+        DeviceIdListVo deviceIdListVo = new DeviceIdListVo();
+        deviceIdListVo.setId(deviceId.getId());
+        deviceIdListVo.setDeviceId(deviceId.getDeviceId());
+        deviceIdListVo.setDeviceName(deviceId.getDeviceName());
+        deviceIdListVo.setCreateTime(deviceId.getCreateTime());
+        deviceIdListVo.setUpdateTime(deviceId.getUpdateTime());
+
+        return deviceIdListVo;
     }
 }
