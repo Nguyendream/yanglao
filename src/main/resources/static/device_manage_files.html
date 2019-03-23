@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>总览 | 智慧养老平台</title>
+  <title>设备列表 | 智慧养老平台</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -93,7 +93,7 @@
     <section class="sidebar">
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="active">
+        <li>
           <a href="/">
             <i class="fa fa-pie-chart"></i> <span>总 览</span>
           </a>
@@ -123,7 +123,7 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>告警设置</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview active">
           <a href="">
             <i class="fa fa-tasks"></i> <span>设备管理</span>
             <span class="pull-right-container">
@@ -131,7 +131,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="device_manage.html"><i class="fa fa-circle-o"></i>设备列表</a></li>
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i>设备列表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>参数设置</a></li>
           </ul>
         </li>
@@ -158,84 +158,31 @@
 
     <!-- Main content -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>New Orders</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-              <p>Bounce Rate</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>44</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>65</h3>
-
-              <p>Unique Visitors</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
       <!-- Main row -->
       <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- /.nav-tabs-custom -->
-
-        </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-
-
-        </section>
-        <!-- right col -->
+        <div class="col-xs-12">
+          <div class="box">
+            <div class="box-header">
+              <h3 class="box-title">Hover Data Table</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="devieListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>文件名</th>
+                  <th>文件类型</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- /.row (main row) -->
 
@@ -279,15 +226,21 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 
 <script>
     $(document).ready(function () {
         //get user info
         $.ajax({
             type: "post",
-            url: "user/get_user_info.do",
+            url: "http://strend.iok.la/user/get_user_info.do",
             timeout: "5000",
             async: true,
+            xhrFields: {
+                withCredentials: true
+            },
             success: function(data) {
                 var username = data.data.username;
                 var createTime = data.data.createTime.substr(0,10);
@@ -296,25 +249,121 @@
                     + '<small>注册时间：' + createTime + '</small>');
             }
         });
-        $("#logoutId").click(function () {
-            $.ajax({
-                type: "post",
-                url: "user/logout.do",
-                timeout: "5000",
-                async: true,
-                error: function(textStatus, data) {
-                    alert("\ntextStatus: " + textStatus +
-                        "\nsuccess: " + data.success);
-                },
-                success: function(data) {
-                    if (data.status == 0) {
-                        location.href="/login";
-                    } else {
-                        alert(data.msg);
+
+        //提示信息
+        var lang = {
+            "sProcessing": "处理中...",
+            "sLengthMenu": "每页 _MENU_ 项",
+            "sZeroRecords": "没有匹配结果",
+            "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
+            "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
+            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
+            "sInfoPostFix": "",
+            "sSearch": "搜索:",
+            "sUrl": "",
+            "sEmptyTable": "表中数据为空",
+            "sLoadingRecords": "载入中...",
+            "sInfoThousands": ",",
+            "oPaginate": {
+                "sFirst": "首页",
+                "sPrevious": "上页",
+                "sNext": "下页",
+                "sLast": "末页",
+                "sJump": "跳转"
+            },
+            "oAria": {
+                "sSortAscending": ": 以升序排列此列",
+                "sSortDescending": ": 以降序排列此列"
+            }
+        };
+        //表格初始化
+        var table = $('#devieListId').DataTable({
+            language:lang,  //提示信息
+            autoWidth: false,  //禁用自动调整列宽
+            stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
+            processing: true,  //隐藏加载提示,自行处理
+            serverSide: true,  //启用服务器端分页
+            searching: false,  //禁用原生搜索
+            orderMulti: false,  //启用多列排序
+            order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
+            renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
+            pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
+            columnDefs: [{
+                "targets": 'nosort',  //列的样式名
+                "orderable": false    //包含上样式名‘nosort’的禁止排序
+            }],
+            ajax: function (data, callback, settings) {
+                // 封装请求参数
+                var param = {};
+                param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
+                //param.pageNum = data.start;//开始的记录序号
+                param.deviceId = 1;
+                param.pageNum = (data.start / data.length)+1;//当前页码
+
+                // console.log(param);
+                //ajax请求数据
+                $.ajax({
+                    type: "GET",
+                    url: "http://strend.iok.la/manage/device/list_files.do",
+                    cache: false,  //禁用缓存
+                    data: param,  //传入组装的参数
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    //dataType: "json",
+                    success: function (result) {
+                        console.log(result);
+                        //setTimeout仅为测试延迟效果
+                        setTimeout(function () {
+                            if (result.status == 0) {
+                                //封装返回数据
+                                var returnData = {};
+                                returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                                returnData.recordsTotal = result.data.total;//返回数据全部记录
+                                returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
+                                returnData.data = result.data.list;//返回的数据列表
+                                console.log(returnData);
+                                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                                callback(returnData);
+                            } else {
+                                alert(result.msg);
+                            }
+                        }, 200);
+                    }
+                });
+            },
+            //列表表头字段
+            columns: [
+                { "data": "id" },
+                { "data": "fileName" },
+                { "data": "fileType" },
+                { "data": "createTime" },
+                { "data": null }
+            ],
+            columnDefs: [
+                {
+                    targets: 4,
+                    render: function (data, type, row, meta) {
+                        var id = data.id;
+                        var html = '<a type="button" class="btn btn-success btn-block" ' +
+                            'href="http://strend.iok.la/manage/device/download/' +
+                            id +'">下载</a>';
+                        return html;
                     }
                 }
-            });
+            ]
+
         });
+        // new $.fn.dataTable.Buttons( table, {
+        //     buttons: [
+        //         'copy', 'excel', 'pdf'
+        //     ]
+        // } );
+        // table.buttons().container()
+        //     .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
+
+
     })
 </script>
 </body>

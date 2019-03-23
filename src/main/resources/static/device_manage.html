@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>总览 | 智慧养老平台</title>
+  <title>设备列表 | 智慧养老平台</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -17,6 +17,10 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+  <!-- datatables button cdn-->
+  <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/datatables.min.css"/>-->
+
+  <link rel="stylesheet" href="dist/css/Yanlao.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -93,7 +97,7 @@
     <section class="sidebar">
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
-        <li class="active">
+        <li>
           <a href="/">
             <i class="fa fa-pie-chart"></i> <span>总 览</span>
           </a>
@@ -123,7 +127,7 @@
             <li><a href="#"><i class="fa fa-circle-o"></i>告警设置</a></li>
           </ul>
         </li>
-        <li class="treeview">
+        <li class="treeview active">
           <a href="">
             <i class="fa fa-tasks"></i> <span>设备管理</span>
             <span class="pull-right-container">
@@ -131,7 +135,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="device_manage.html"><i class="fa fa-circle-o"></i>设备列表</a></li>
+            <li class="active"><a href="#"><i class="fa fa-circle-o"></i>设备列表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>参数设置</a></li>
           </ul>
         </li>
@@ -158,86 +162,128 @@
 
     <!-- Main content -->
     <section class="content">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-            <div class="inner">
-              <h3>150</h3>
-
-              <p>New Orders</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-green">
-            <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-
-              <p>Bounce Rate</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-yellow">
-            <div class="inner">
-              <h3>44</h3>
-
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-            <div class="inner">
-              <h3>65</h3>
-
-              <p>Unique Visitors</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-pie-graph"></i>
-            </div>
-            <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
       <!-- Main row -->
       <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- /.nav-tabs-custom -->
+        <div class="col-xs-12">
+          <div class="box" id="table1Id">
+            <div class="box-header">
+              <h3 class="box-title">我的设备 &nbsp;&nbsp;
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-device"><i class="fa fa-plus"></i> 添加</button>
+              </h3>
 
-        </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-
-
-        </section>
-        <!-- right col -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="devieListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>设备号</th>
+                  <th>名字</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box" id="table2Id" style="display: none;">
+            <div class="box-header">
+              <h3 class="box-title">设备文件</h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="devieFileListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>文件名</th>
+                  <th>文件类型</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- /.row (main row) -->
+
+      <!--model addDevice-->
+      <div class="modal fade" id="modal-add-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">添加新设备</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addDeviceFormId" class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备号：</label>
+                    <div class="col-sm-10">
+                        <input name="deviceId" class="form-control" placeholder="设备号">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备名：</label>
+                    <div class="col-sm-10">
+                      <input name="deviceName" class="form-control" placeholder="设备名">
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="addDeviceButtonId">添加</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!--model updateDevice-->
+      <div class="modal fade" id="modal-update-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">更新设备信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="updateDeviceFormId" class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备号：</label>
+                    <div class="col-sm-10">
+                        <input name="deviceId" class="form-control" readonly placeholder="设备号">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备名：</label>
+                    <div class="col-sm-10">
+                      <input name="deviceName" class="form-control" placeholder="设备名">
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="updateDeviceButtonId">保存</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 
     </section>
     <!-- /.content -->
@@ -279,43 +325,12 @@
 <script src="dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="dist/js/demo.js"></script>
+<!-- DataTables -->
+<script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- DataTables Button-->
+<!--<script type="text/javascript" src="https://cdn.datatables.net/v/dt/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/datatables.min.js"></script>-->
 
-<script>
-    $(document).ready(function () {
-        //get user info
-        $.ajax({
-            type: "post",
-            url: "user/get_user_info.do",
-            timeout: "5000",
-            async: true,
-            success: function(data) {
-                var username = data.data.username;
-                var createTime = data.data.createTime.substr(0,10);
-                $("#usernameId").html(username);
-                $("#helloId").html(username + '，你好啊！'
-                    + '<small>注册时间：' + createTime + '</small>');
-            }
-        });
-        $("#logoutId").click(function () {
-            $.ajax({
-                type: "post",
-                url: "user/logout.do",
-                timeout: "5000",
-                async: true,
-                error: function(textStatus, data) {
-                    alert("\ntextStatus: " + textStatus +
-                        "\nsuccess: " + data.success);
-                },
-                success: function(data) {
-                    if (data.status == 0) {
-                        location.href="/login";
-                    } else {
-                        alert(data.msg);
-                    }
-                }
-            });
-        });
-    })
-</script>
+<script src="dist/js/pages/device_manage.js"></script>
 </body>
 </html>

@@ -51,13 +51,13 @@ public class DeviceServiceImp implements DeviceService {
             return ServerResponse.createByErrorMessage("参数错误");
         }
         if (!this.getDeviceByUserAndDeviceId(deviceId.getUserId(), deviceId.getDeviceId()).isSuccess()) {
-            return ServerResponse.createByErrorMessage("设备参数更新错误，找不到该设备");
+            return ServerResponse.createByErrorMessage("设备信息更新错误，找不到该设备");
         }
         int resultCount = deviceIdMapper.updateByDeviceIdSelective(deviceId);
         if (resultCount > 0) {
-            return ServerResponse.createBySuccessMessage("参设备数更新成功");
+            return ServerResponse.createBySuccessMessage("设备信息更新成功");
         }
-        return ServerResponse.createByErrorMessage("设备参数更新失败");
+        return ServerResponse.createByErrorMessage("设备信息更新失败");
     }
 
     @Override
