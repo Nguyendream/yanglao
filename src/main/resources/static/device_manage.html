@@ -151,12 +151,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        设备
+        <small>列表</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">设备列表</li>
       </ol>
     </section>
 
@@ -167,8 +167,11 @@
         <div class="col-xs-12">
           <div class="box" id="table1Id">
             <div class="box-header">
-              <h3 class="box-title">我的设备 &nbsp;&nbsp;
-                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-device"><i class="fa fa-plus"></i> 添加</button>
+              <h3 class="box-title">
+                <span>我的设备&nbsp;&nbsp;</span>
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-device">
+                  <i class="fa fa-plus"></i> 添加
+                </button>
               </h3>
 
             </div>
@@ -191,11 +194,15 @@
           </div>
           <div class="box" id="table2Id" style="display: none;">
             <div class="box-header">
-              <h3 class="box-title">设备文件</h3>
+              <h3 class="box-title">
+                <button id="table2BackBtnId" class="btn btn-sm btn-primary">
+                  <i class="fa fa-mail-reply"> 返回</i>
+                </button>
+                <span id="table2TitleId">设备文件</span></h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <table id="devieFileListId" class="table table-bordered table-hover">
+              <table id="deviceFileListId" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>id</th>
@@ -203,6 +210,32 @@
                   <th>文件类型</th>
                   <th>创建时间</th>
                   <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box" id="table3Id" style="display: none;">
+            <div class="box-header">
+              <h3 class="box-title">
+                <button id="table3BackBtnId" class="btn btn-sm btn-primary">
+                  <i class="fa fa-mail-reply"> 返回</i>
+                </button>
+                <span id="table3TitleId">设备文件</span></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="deviceLogListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>温度</th>
+                  <th>湿度</th>
+                  <th>可燃气体指数</th>
+                  <th>红外</th>
+                  <th>时间</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -229,6 +262,7 @@
                     <label class="col-sm-2 control-label">设备号：</label>
                     <div class="col-sm-10">
                         <input name="deviceId" class="form-control" placeholder="设备号">
+                        <span class="help-block"></span>
                     </div>
                   </div>
                   <div class="form-group">
@@ -277,6 +311,28 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
               <button type="button" class="btn btn-primary" id="updateDeviceButtonId">保存</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!--model deleteDevice-->
+      <div class="modal modal-danger fade" id="modal-delete-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">删除设备</h4>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除设备号为<span id="deviceId">0</span>的设备吗，该设备的所有数据均会被删除。</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-outline" id="deleteButtonId">删除</button>
             </div>
           </div>
           <!-- /.modal-content -->
