@@ -55,17 +55,17 @@ public class UserServiceImp implements UserService {
         if (!validResponse.isSuccess()) {
             return validResponse;
         }
-        validResponse = this.checkValid(deviceNum, Const.DEVICE_ID);
-        if (!validResponse.isSuccess()) {
-            return validResponse;
-        }
+//        validResponse = this.checkValid(deviceNum, Const.DEVICE_ID);
+//        if (!validResponse.isSuccess()) {
+//            return validResponse;
+//        }
 
         user.setRole(Const.Role.ROLE_USER);
         //MD5加密
         user.setPassword(MD5Util.MD5EncodeUtf8(user.getPassword()));
 
-        DeviceId deviceId = new DeviceId();
-        deviceId.setDeviceId(Integer.parseInt(deviceNum));
+//        DeviceId deviceId = new DeviceId();
+//        deviceId.setDeviceId(Integer.parseInt(deviceNum));
 
         int resultCount = userMapper.insert(user);
         if (resultCount == 0) {
@@ -94,12 +94,12 @@ public class UserServiceImp implements UserService {
                 }
             }
             // 设备号校验
-            /*if (Const.DEVICE_ID.equals(type)) {
-                int resultCount = deviceIdMapper.checkDeviceId(str);
+            if (Const.DEVICE_ID.equals(type)) {
+                int resultCount = deviceIdMapper.checkDeviceId(Integer.parseInt(str));
                 if (resultCount > 0) {
                     return ServerResponse.createByErrorMessage("该设备已注册");
                 }
-            }*/
+            }
         } else {
             return ServerResponse.createByErrorMessage("参数错误");
         }

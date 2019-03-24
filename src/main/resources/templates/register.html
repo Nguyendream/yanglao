@@ -40,24 +40,29 @@
       <div class="form-group has-feedback">
         <input id="usernameId" type="text" class="form-control" name="username" placeholder="用户名">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
+        <span class="help-block"></span>
       </div>
       <div class="form-group has-feedback">
         <input id="phoneId" type="text" class="form-control" name="phone" placeholder="手机号">
         <span class="glyphicon glyphicon-phone form-control-feedback"></span>
+        <span class="help-block"></span>
       </div>
       <div class="form-group has-feedback input-group">
         <input id="codeId" type="text" class="form-control" name="code" disabled placeholder="验证码">
         <span class="input-group-btn">
           <button id="getCodeId" type="button" class="btn btn-primary btn-flat disabled">获取验证码</button>
         </span>
+        <span class="help-block"></span>
       </div>
       <div class="form-group has-feedback">
         <input id="passwordId" type="password" class="form-control" name="password" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+        <span class="help-block"></span>
       </div>
       <div class="form-group has-feedback">
         <input id="passwordId1" type="password" class="form-control" placeholder="确认密码">
         <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+        <span class="help-block"></span>
       </div>
       <div class="row">
         <div class="col-xs-8">
@@ -91,6 +96,8 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
+<!---->
+<script src="dist/js/pages/register.js"></script>
 <script>
   $(function () {
     $('input').iCheck({
@@ -99,60 +106,7 @@
       increaseArea: '20%' /* optional */
     });
   });
-  $(document).ready(function () {
-      $("#registerButtonId").click(function () {
 
-          var usernamePattern = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){3,20}$/;
-          if (!usernamePattern.exec($("#usernameId").val())) {
-              alert("用户名为5到20个字符，以字母开头，仅限大小写字母和数字！")
-              return false;
-          }
-
-          var phonePattern = /^\d{11}$/;
-          if (!phonePattern.exec($("#phoneId").val())) {
-              alert("手机号码格式有误！");
-              return false;
-          }
-
-          //todo 验证码
-
-          var passwordPattern = /^([a-zA-Z0-9]|[._&*#@]){6,20}$/;
-          if (!passwordPattern.exec($("#passwordId").val())) {
-              alert("密码为6到20个字符，仅限大小写字母和数字和._&*#@");
-              return false;
-          }
-
-          if ($("#passwordId1").val() != $("#passwordId").val()) {
-              alert("两次密码不一致！");
-              return false;
-          }
-
-          if (!$("#checkboxId").is(":checked")) {
-              alert("请同意用户条款");
-              return false;
-          }
-
-          $.ajax({
-              type: "post",
-              url: "user/register.do",
-              timeout: "5000",
-              data: $("#registerFormId").serialize(),
-              async: true,
-              error: function(textStatus, data) {
-                  alert("\ntextStatus: " + textStatus +
-                      "\nsuccess: " + data.success);
-              },
-              success: function(data) {
-                  if (data.status == 0) {
-                      alert("注册成功");
-                      location.href="/login";
-                  } else {
-                      alert(data.msg);
-                  }
-              }
-          });
-      });
-  })
 </script>
 </body>
 </html>

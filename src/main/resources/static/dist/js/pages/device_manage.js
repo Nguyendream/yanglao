@@ -1,5 +1,5 @@
 var deviceId = 0;
-var origin = "http://strend.iok.la/";
+var origin = "";//跨域访问,空表示不跨域
 
 //table的dom元素
 var table1 = $('#table1Id');//设备列表
@@ -287,6 +287,27 @@ $.initTable = {
 };
 
 //ajax
+$.checkFromServer = function(str, type) {
+    var result = false;
+    $.ajax({
+        type: "post",
+        url: origin + "user/check_valid.do",
+        timeout: "5000",
+        data: 'str=' + str + '&type=' + type,
+        async: false,
+        error: function () {
+            alert("与服务器连接错误");
+        },
+        success: function (data) {
+            if (data.status == 0) {
+                result = true;
+            } else {
+                result = false;
+            }
+        }
+    });
+    return result;
+};
 $.func = {
     getUserInfo: function () {
         //get user info
@@ -299,14 +320,39 @@ $.func = {
                 withCredentials: true
             },
             success: function(data) {
-                var username = data.data.username;
-                var createTime = data.data.createTime.substr(0,10);
-                $("#usernameId").html(username);
-                $("#helloId").html(username + '，你好啊！'
-                    + '<small>注册时间：' + createTime + '</small>');
+                if (data.status == 0) {
+                    var username = data.data.username;
+                    var createTime = data.data.createTime.substr(0,10);
+                    $("#usernameId").html(username);
+                    $("#helloId").html(username + '，你好啊！'
+                        + '<small>注册时间：' + createTime + '</small>');
+                } else if (data.status == 10) {
+                    location.href="/login";
+                } else {
+                    alert(data.msg);
+                }
             },
             error: function () {
                 alert('网络连接超时');
+            }
+        });
+    },
+    logout: function() {
+        $.ajax({
+            type: "post",
+            url: "user/logout.do",
+            timeout: "5000",
+            async: true,
+            error: function(textStatus, data) {
+                alert("\ntextStatus: " + textStatus +
+                    "\nsuccess: " + data.success);
+            },
+            success: function(data) {
+                if (data.status == 0) {
+                    location.href="/login";
+                } else {
+                    alert(data.msg);
+                }
             }
         });
     },
@@ -319,9 +365,15 @@ $.func = {
             deviceId.siblings('span').html('<i class="fa fa-times-circle-o">设备号为1-9位的整数</i>');
             $('#addDeviceButtonId').attr("disabled", true);
         } else {
-            deviceId.parent().attr("class", "col-sm-10");
-            deviceId.siblings('span').html('');
-            $('#addDeviceButtonId').attr("disabled", false);
+            if ($.checkFromServer(deviceId.val(), 'deviceId')) {
+                deviceId.parent().attr("class", "col-sm-10");
+                deviceId.siblings('span').html('');
+                $('#addDeviceButtonId').attr("disabled", false);
+            } else {
+                deviceId.parent().attr("class", "col-sm-10 has-error");
+                deviceId.siblings('span').html('<i class="fa fa-times-circle-o">设备号已注册</i>');
+                $('#addDeviceButtonId').attr("disabled", true);
+            }
         }
     },
     addDevice: function () {
@@ -473,6 +525,7 @@ $(function () {
     //初始化table1的数据
     tableData1 = $.initTable.table1();
 
+    //设备号检验
     $('#addDeviceFormId').find('input[name="deviceId"]').blur(function () {
         $.func.checkDeviceId();
     });
@@ -502,5 +555,8 @@ $(function () {
     $('#table3BackBtnId').click(function () {
         $.switchTable.table1();
     });
-
+    //注销
+    $("#logoutId").click(function () {
+        $.func.logout();
+    });
 })

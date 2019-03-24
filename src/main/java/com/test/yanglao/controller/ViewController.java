@@ -30,4 +30,14 @@ public class ViewController {
         return "register";
     }
 
+    @GetMapping("/manage")
+    public String deviceManage(HttpSession session) {
+
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        if (user != null) {
+            return "device_manage";
+        }
+        return "redirect:/login";
+    }
+
 }

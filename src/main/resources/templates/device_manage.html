@@ -17,6 +17,10 @@
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+  <!-- datatables button cdn-->
+  <!--<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/datatables.min.css"/>-->
+
+  <link rel="stylesheet" href="dist/css/Yanlao.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -131,7 +135,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="active"><a href="#"><i class="fa fa-circle-o"></i>设备列表</a></li>
+            <li class="active"><a href="/manage"><i class="fa fa-circle-o"></i>设备列表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>参数设置</a></li>
           </ul>
         </li>
@@ -147,12 +151,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        设备
+        <small>列表</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li class="active">设备列表</li>
       </ol>
     </section>
 
@@ -161,13 +165,44 @@
       <!-- Main row -->
       <div class="row">
         <div class="col-xs-12">
-          <div class="box">
+          <div class="box" id="table1Id">
             <div class="box-header">
-              <h3 class="box-title">Hover Data Table</h3>
+              <h3 class="box-title">
+                <span>我的设备&nbsp;&nbsp;</span>
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#modal-add-device">
+                  <i class="fa fa-plus"></i> 添加
+                </button>
+              </h3>
+
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <table id="devieListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>设备号</th>
+                  <th>名字</th>
+                  <th>创建时间</th>
+                  <th>更新时间</th>
+                  <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="box" id="table2Id" style="display: none;">
+            <div class="box-header">
+              <h3 class="box-title">
+                <button id="table2BackBtnId" class="btn btn-sm btn-primary">
+                  <i class="fa fa-mail-reply"> 返回</i>
+                </button>
+                <span id="table2TitleId">设备文件</span></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="deviceFileListId" class="table table-bordered table-hover">
                 <thead>
                 <tr>
                   <th>id</th>
@@ -182,9 +217,129 @@
               </table>
             </div>
           </div>
+          <div class="box" id="table3Id" style="display: none;">
+            <div class="box-header">
+              <h3 class="box-title">
+                <button id="table3BackBtnId" class="btn btn-sm btn-primary">
+                  <i class="fa fa-mail-reply"> 返回</i>
+                </button>
+                <span id="table3TitleId">设备文件</span></h3>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+              <table id="deviceLogListId" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>温度</th>
+                  <th>湿度</th>
+                  <th>可燃气体指数</th>
+                  <th>红外</th>
+                  <th>时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
       <!-- /.row (main row) -->
+
+      <!--model addDevice-->
+      <div class="modal fade" id="modal-add-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">添加新设备</h4>
+            </div>
+            <div class="modal-body">
+                <form id="addDeviceFormId" class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备号：</label>
+                    <div class="col-sm-10">
+                        <input name="deviceId" class="form-control" placeholder="设备号">
+                        <span class="help-block"></span>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备名：</label>
+                    <div class="col-sm-10">
+                      <input name="deviceName" class="form-control" placeholder="设备名">
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="addDeviceButtonId">添加</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!--model updateDevice-->
+      <div class="modal fade" id="modal-update-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">更新设备信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="updateDeviceFormId" class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备号：</label>
+                    <div class="col-sm-10">
+                        <input name="deviceId" class="form-control" readonly placeholder="设备号">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">设备名：</label>
+                    <div class="col-sm-10">
+                      <input name="deviceName" class="form-control" placeholder="设备名">
+                    </div>
+                  </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-primary" id="updateDeviceButtonId">保存</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
+      <!--model deleteDevice-->
+      <div class="modal modal-danger fade" id="modal-delete-device">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">删除设备</h4>
+            </div>
+            <div class="modal-body">
+                <p>确定要删除设备号为<span id="deviceId">0</span>的设备吗，该设备的所有数据均会被删除。</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default pull-left" data-dismiss="modal">取消</button>
+              <button type="button" class="btn btn-outline" id="deleteButtonId">删除</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+      <!-- /.modal -->
 
     </section>
     <!-- /.content -->
@@ -229,142 +384,9 @@
 <!-- DataTables -->
 <script src="bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+<!-- DataTables Button-->
+<!--<script type="text/javascript" src="https://cdn.datatables.net/v/dt/b-1.5.6/b-colvis-1.5.6/b-html5-1.5.6/datatables.min.js"></script>-->
 
-<script>
-    $(document).ready(function () {
-        //get user info
-        $.ajax({
-            type: "post",
-            url: "http://strend.iok.la/user/get_user_info.do",
-            timeout: "5000",
-            async: true,
-            xhrFields: {
-                withCredentials: true
-            },
-            success: function(data) {
-                var username = data.data.username;
-                var createTime = data.data.createTime.substr(0,10);
-                $("#usernameId").html(username);
-                $("#helloId").html(username + '，你好啊！'
-                    + '<small>注册时间：' + createTime + '</small>');
-            }
-        });
-
-        //提示信息
-        var lang = {
-            "sProcessing": "处理中...",
-            "sLengthMenu": "每页 _MENU_ 项",
-            "sZeroRecords": "没有匹配结果",
-            "sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
-            "sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
-            "sInfoFiltered": "(由 _MAX_ 项结果过滤)",
-            "sInfoPostFix": "",
-            "sSearch": "搜索:",
-            "sUrl": "",
-            "sEmptyTable": "表中数据为空",
-            "sLoadingRecords": "载入中...",
-            "sInfoThousands": ",",
-            "oPaginate": {
-                "sFirst": "首页",
-                "sPrevious": "上页",
-                "sNext": "下页",
-                "sLast": "末页",
-                "sJump": "跳转"
-            },
-            "oAria": {
-                "sSortAscending": ": 以升序排列此列",
-                "sSortDescending": ": 以降序排列此列"
-            }
-        };
-        //表格初始化
-        var table = $('#devieListId').DataTable({
-            language:lang,  //提示信息
-            autoWidth: false,  //禁用自动调整列宽
-            stripeClasses: ["odd", "even"],  //为奇偶行加上样式，兼容不支持CSS伪类的场合
-            processing: true,  //隐藏加载提示,自行处理
-            serverSide: true,  //启用服务器端分页
-            searching: false,  //禁用原生搜索
-            orderMulti: false,  //启用多列排序
-            order: [],  //取消默认排序查询,否则复选框一列会出现小箭头
-            renderer: "bootstrap",  //渲染样式：Bootstrap和jquery-ui
-            pagingType: "simple_numbers",  //分页样式：simple,simple_numbers,full,full_numbers
-            columnDefs: [{
-                "targets": 'nosort',  //列的样式名
-                "orderable": false    //包含上样式名‘nosort’的禁止排序
-            }],
-            ajax: function (data, callback, settings) {
-                // 封装请求参数
-                var param = {};
-                param.pageSize = data.length;//页面显示记录条数，在页面显示每页显示多少项的时候
-                //param.pageNum = data.start;//开始的记录序号
-                param.deviceId = 1;
-                param.pageNum = (data.start / data.length)+1;//当前页码
-
-                // console.log(param);
-                //ajax请求数据
-                $.ajax({
-                    type: "GET",
-                    url: "http://strend.iok.la/manage/device/list_files.do",
-                    cache: false,  //禁用缓存
-                    data: param,  //传入组装的参数
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    //dataType: "json",
-                    success: function (result) {
-                        console.log(result);
-                        //setTimeout仅为测试延迟效果
-                        setTimeout(function () {
-                            if (result.status == 0) {
-                                //封装返回数据
-                                var returnData = {};
-                                returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
-                                returnData.recordsTotal = result.data.total;//返回数据全部记录
-                                returnData.recordsFiltered = result.data.total;//后台不实现过滤功能，每次查询均视作全部结果
-                                returnData.data = result.data.list;//返回的数据列表
-                                console.log(returnData);
-                                //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
-                                //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
-                                callback(returnData);
-                            } else {
-                                alert(result.msg);
-                            }
-                        }, 200);
-                    }
-                });
-            },
-            //列表表头字段
-            columns: [
-                { "data": "id" },
-                { "data": "fileName" },
-                { "data": "fileType" },
-                { "data": "createTime" },
-                { "data": null }
-            ],
-            columnDefs: [
-                {
-                    targets: 4,
-                    render: function (data, type, row, meta) {
-                        var id = data.id;
-                        var html = '<a type="button" class="btn btn-success btn-block" ' +
-                            'href="http://strend.iok.la/manage/device/download/' +
-                            id +'">下载</a>';
-                        return html;
-                    }
-                }
-            ]
-
-        });
-        // new $.fn.dataTable.Buttons( table, {
-        //     buttons: [
-        //         'copy', 'excel', 'pdf'
-        //     ]
-        // } );
-        // table.buttons().container()
-        //     .appendTo( $('.col-sm-6:eq(0)', table.table().container() ) );
-
-
-    })
-</script>
+<script src="dist/js/pages/device_manage.js"></script>
 </body>
 </html>
