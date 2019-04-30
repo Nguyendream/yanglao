@@ -15,7 +15,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("Device")
@@ -157,6 +160,45 @@ public class DeviceServiceImp implements DeviceService {
         PageInfo pageInfo = new PageInfo(list);
 
         return ServerResponse.createBySuccess(pageInfo);
+    }
+
+    @Override
+    public ServerResponse<List<DeviceLogs>> selectLogsByIdAndDate(Integer deviceId, String date) {
+
+        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
+        Date startDate = null;
+        Date endDate = startDate;
+
+        try {
+            startDate = ft.parse(date);
+            endDate = new Date(startDate.getTime() + 24*3600*1000L);//+1天
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return ServerResponse.createByErrorMessage("日期格式错误，应为'yyyy-MM-dd'");
+        }
+
+        List<DeviceLogs> deviceLogsList = deviceLogsMapper
+                .selectListByDeviceIdAndDate(deviceId, startDate, endDate);
+
+        if (deviceLogsList.size() == 0) {
+            return ServerResponse.createByErrorMessage("当天没有数据");
+        }
+        return ServerResponse.createBySuccess(deviceLogsList);
+    }
+
+    @Override
+    public ServerResponse<String> getLastDayByDeviceId(Integer deviceId) {
+
+        Date lastDate = deviceLogsMapper.selectLastDateByDeviceId(deviceId);
+
+        if (lastDate == null) {
+            return ServerResponse.createByErrorMessage("没有最近的数据");
+        }
+
+        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
+        String lastDay = ft.format(lastDate);
+
+        return ServerResponse.createBySuccess("获取成功,存在最近数据", lastDay);
     }
 
     @Override

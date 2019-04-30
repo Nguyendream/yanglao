@@ -129,38 +129,6 @@ $(function () {
 
 
     $("#registerButtonId").click(function () {
-
-      // var usernamePattern = /^[a-zA-Z]{1}([a-zA-Z0-9]|[._]){3,20}$/;
-      // if (!usernamePattern.exec($("#usernameId").val())) {
-      //     alert("用户名为5到20个字符，以字母开头，仅限大小写字母和数字！")
-      //     return false;
-      // }
-      //
-      // var phonePattern = /^\d{11}$/;
-      // if (!phonePattern.exec($("#phoneId").val())) {
-      //     alert("手机号码格式有误！");
-      //     return false;
-      // }
-      //
-      // //todo 验证码
-      //
-      // var passwordPattern = /^([a-zA-Z0-9]|[._&*#@]){6,20}$/;
-      // if (!passwordPattern.exec($("#passwordId").val())) {
-      //     alert("密码为6到20个字符，仅限大小写字母和数字和._&*#@");
-      //     return false;
-      // }
-      //
-      // if ($("#passwordId1").val() != $("#passwordId").val()) {
-      //     alert("两次密码不一致！");
-      //     return false;
-      // }
-      //
-      // if (!$("#checkboxId").is(":checked")) {
-      //     alert("请同意用户条款");
-      //     return false;
-      // }
-
-
         if ($.checkValid.username() &&
             $.checkValid.phone() &&
             $.checkValid.password() &&

@@ -5,6 +5,7 @@ import com.test.yanglao.common.Const;
 import com.test.yanglao.common.ResponseCode;
 import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.pojo.DeviceId;
+import com.test.yanglao.pojo.DeviceLogs;
 import com.test.yanglao.pojo.User;
 import com.test.yanglao.service.DeviceFileService;
 import com.test.yanglao.service.DeviceService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/manage/device/")
@@ -121,6 +124,38 @@ public class DeviceManageController {
         }
 
         return deviceService.selectLogsById(deviceId, pageNum, pageSize);
+    }
+
+    @RequestMapping(value = "list_logs_day.do", method = RequestMethod.POST)
+    public ServerResponse<List<DeviceLogs>> listLogsByDate(HttpSession session, int deviceId, String date) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+
+        if (!deviceService.getDeviceByUserAndDeviceId(user.getId(), deviceId).isSuccess()) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.DEVICE_NULL.getCode(),"设备号未注册");
+        }
+        return deviceService.selectLogsByIdAndDate(deviceId, date);
+    }
+
+    @RequestMapping("get_lastday.do")
+    public ServerResponse<String> getLastDay(HttpSession session, int deviceId) {
+
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (user == null) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.NEED_LOGIN.getCode(),"用户未登录");
+        }
+
+        if (!deviceService.getDeviceByUserAndDeviceId(user.getId(), deviceId).isSuccess()) {
+            return ServerResponse.createByErrorCodeMessage(
+                    ResponseCode.DEVICE_NULL.getCode(),"设备号未注册");
+        }
+        return deviceService.getLastDayByDeviceId(deviceId);
     }
 
     @RequestMapping(value = "delete_all_logs.do", method = RequestMethod.POST)

@@ -5,6 +5,7 @@ import com.test.yanglao.common.ServerResponse;
 import com.test.yanglao.pojo.DeviceId;
 import com.test.yanglao.pojo.DeviceLogs;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DeviceService {
@@ -25,6 +26,10 @@ public interface DeviceService {
     ServerResponse<String> addLogs(DeviceLogs deviceLogs);
 
     ServerResponse<PageInfo> selectLogsById(Integer deviceId, int pageNum, int pageSize);
+
+    ServerResponse<List<DeviceLogs>> selectLogsByIdAndDate(Integer deviceId, String date);
+
+    ServerResponse<String> getLastDayByDeviceId(Integer deviceId);
 
     ServerResponse<String> deleteLogByUserAndDeviceId(Integer userId, Integer deviceId);
 }

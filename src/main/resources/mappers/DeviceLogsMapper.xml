@@ -124,6 +124,22 @@
     where device_id = #{deviceId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectListByDeviceIdAndDate" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from yanglao_device_logs
+    where device_id = #{deviceId}
+    and create_time between #{startDate} and #{endDate}
+  </select>
+
+  <select id="selectLastDateByDeviceId" parameterType="java.lang.Integer" resultType="java.util.Date">
+    select create_time
+    from yanglao_device_logs
+    where device_id = #{deviceId,jdbcType=INTEGER}
+    order by create_time DESC
+    limit 0,1
+  </select>
+
   <delete id="deleteByDeviceId" parameterType="integer">
     delete from yanglao_device_logs
     where device_id = #{deviceId, jdbcType=INTEGER}
