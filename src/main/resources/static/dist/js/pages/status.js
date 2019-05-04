@@ -202,7 +202,7 @@ $.fchart = {
      var initData = this.initData(sourceData);
         var axis1 = [];
         if (initData != null) {
-            axis1 = this.assembleAxis(initData.time, initData.temp);
+            axis1 = this.assembleAxis(initData.time, initData.gus);
         }
 
         var chartData = {
@@ -372,10 +372,13 @@ $(function () {
     var updateChart = function () {
         var sourceData = $.func.listLogs();
         console.log(sourceData);
+
+        myChart1.destroy();
+        myChart2.destroy();
         myChart1 = $.fchart.newChart1(ctx1, sourceData);
         myChart2 = $.fchart.newChart2(ctx2, sourceData);
-        myChart1.update();
-        myChart2.update();
+        // myChart1.update();
+        // myChart2.update();
     }
 
     selectDevie.on('select2:close', function () {updateChart()});
