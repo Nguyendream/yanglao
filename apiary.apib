@@ -67,6 +67,8 @@ HOST: http://strend.iok.la/
                     }
                 ]
             }
+
+
 ### upload file [POST /device/upload_file.do]
 
 文件上传接口,Content-Type为multipart/form-data,实例为简单起见，使用json
@@ -318,6 +320,51 @@ HOST: http://strend.iok.la/
                 "navigateLastPage": 1
               }
             }
+
+### list logs by day [POST /manage/device/list_logs_day.do{?deviceId&date}]
+
++ Parameters
+    + deviceId (int, `1`) ... 设备号
+    + date (string, `2018-11-15`) ... 日期(天)
+
++ Response 200 (application/json)
+
+    + Body
+
+        {
+                "status": 0,
+                "data": [
+                    {
+                        "id": 1,
+                        "deviceId": 1,
+                        "temp": 12.43,
+                        "humi": 34.53,
+                        "gus": 3.4,
+                        "createTime": "2018-11-15 10:57:42"
+                    },
+                    {
+                        "id": 2,
+                        "deviceId": 1,
+                        "temp": 12.43,
+                        "humi": 54.53,
+                        "gus": 3.4,
+                        "createTime": "2018-11-15 10:58:05"
+                    }
+                ]
+        }
+
+### get last day [GET /manage/device/get_lastday.do{?deviceId}]
+
++ Parameters
+    + deviceId (int, `1`) ... 设备号
+
++ Body
+
+        {
+          "status": 0,
+          "msg": "获取成功,存在最近数据",
+          "data": "2019-04-29"
+        }
 
 ### delete all logs [POST /manage/device/delete_all_logs.do]
 
