@@ -69,7 +69,9 @@ public class UserController {
         if (user != null) {
             return ServerResponse.createBySuccess(user);
         }
-        return ServerResponse.createByErrorMessage("用户未登陆,无法获取信息");
+//        return ServerResponse.createByErrorMessage("用户未登陆,无法获取信息");
+        return ServerResponse.createByErrorCodeMessage(
+                Const.UserStatus.NO_LOGIN, "用户未登陆,无法获取信息");
     }
 
     @RequestMapping(value = "get_all_users.do", method = RequestMethod.POST)

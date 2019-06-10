@@ -336,11 +336,18 @@
             timeout: "5000",
             async: true,
             success: function(data) {
-                var username = data.data.username;
-                var createTime = data.data.createTime.substr(0,10);
-                $("#usernameId").html(username);
-                $("#helloId").html(username + '，你好啊！'
-                    + '<small>注册时间：' + createTime + '</small>');
+                if (data.status == 0) {
+                    var username = data.data.username;
+                    var createTime = data.data.createTime.substr(0,10);
+                    $("#usernameId").html(username);
+                    $("#helloId").html(username + '，你好啊！'
+                        + '<small>注册时间：' + createTime + '</small>');
+                } else if (data.status == 10) {
+                    alert("用户未登录");
+                    location.href = "./login";
+                } else {
+                    alert(data.msg);
+                }
             }
         });
         $("#logoutId").click(function () {
@@ -355,7 +362,7 @@
                 },
                 success: function(data) {
                     if (data.status == 0) {
-                        location.href="/login";
+                        location.href="./login";
                     } else {
                         alert(data.msg);
                     }

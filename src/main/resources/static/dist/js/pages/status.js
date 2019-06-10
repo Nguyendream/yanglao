@@ -9,7 +9,7 @@
     // 9	20	90	2000	1	2019-04-23 18:55:55
     // 14	20	90	2000	1	2019-04-23 19:24:19
 
-var origin = "http://strend.iok.la/";
+var origin = "";
 
 var ctx1 = $('#chart1');
 var ctx2 = $('#chart2');
@@ -296,7 +296,7 @@ $.func = {
         var lastDay = '';
         $.ajax({
             type: "GET",
-            url: origin + "/manage/device/get_lastday.do",
+            url: origin + "manage/device/get_lastday.do",
             cache: false,  //禁用缓存
             data: 'deviceId=' + selectDevie.val(),  //传入组装的参数
             async: false,
@@ -317,7 +317,7 @@ $.func = {
         var logs = null;
         $.ajax({
             type: "POST",
-            url: origin + "/manage/device/list_logs_day.do",
+            url: origin + "manage/device/list_logs_day.do",
             cache: false,  //禁用缓存
             data: 'deviceId=' + selectDevie.val() + '&date=' + selectDate.val(),  //传入组装的参数
             async: false,
