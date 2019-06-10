@@ -148,7 +148,7 @@ $(function () {
                 success: function (data) {
                     if (data.status == 0) {
                         alert("注册成功");
-                        location.href = "/login";
+                        location.href = "./login";
                     } else {
                         alert(data.msg);
                     }

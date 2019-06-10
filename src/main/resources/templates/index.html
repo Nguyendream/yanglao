@@ -94,7 +94,7 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="active">
-          <a href="/">
+          <a href=".">
             <i class="fa fa-pie-chart"></i> <span>总 览</span>
           </a>
         </li>
@@ -130,7 +130,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="/manage"><i class="fa fa-circle-o"></i>设备列表</a></li>
+            <li><a href="manage"><i class="fa fa-circle-o"></i>设备列表</a></li>
             <li><a href="#"><i class="fa fa-circle-o"></i>参数设置</a></li>
           </ul>
         </li>
@@ -307,7 +307,7 @@
                 },
                 success: function(data) {
                     if (data.status == 0) {
-                        location.href="/login";
+                        location.href="./login";
                     } else {
                         alert(data.msg);
                     }

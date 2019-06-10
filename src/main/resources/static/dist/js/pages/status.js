@@ -239,7 +239,7 @@ $.func = {
                     $("#helloId").html(username + '，你好啊！'
                         + '<small>注册时间：' + createTime + '</small>');
                 } else if (data.status == 10) {
-                    location.href="/login";
+                    location.href="./login";
                 } else {
                     alert(data.msg);
                 }
@@ -261,7 +261,7 @@ $.func = {
             },
             success: function(data) {
                 if (data.status == 0) {
-                    location.href="/login";
+                    location.href="./login";
                 } else {
                     alert(data.msg);
                 }

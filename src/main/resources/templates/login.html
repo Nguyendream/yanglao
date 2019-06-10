@@ -67,7 +67,7 @@
     <!-- /.social-auth-links -->
 
     <a href="#">忘记密码</a><br>
-    <a href="/register" class="text-center">新用户注册</a>
+    <a href="register" class="text-center">新用户注册</a>
 
   </div>
   <!-- /.login-box-body -->
@@ -111,7 +111,7 @@
               },
               success: function(data) {
                  if (data.status == 0) {
-                     location.href="/";
+                     location.href=".";
                  } else {
                      alert(data.msg);
                      if (data.msg == "密码错误") {
